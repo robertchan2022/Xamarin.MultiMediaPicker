@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:vm="clr-namespace:MultiMediaPickerSample.ViewModels" x:Class="MultiMediaPickerSample.MainPage"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
+             ios:Page.UseSafeArea="true">
+
+    <ContentPage.Content>
+        <StackLayout Padding="15">
+            <Button TextColor="White" BackgroundColor="Blue" Text="Select images" Command="{Binding SelectImagesCommand}"/>
+            <Button TextColor="White" BackgroundColor="Blue" Text="Select videos" Command="{Binding SelectVideosCommand}"/>
+            <Button TextColor="White" BackgroundColor="Blue" Text="Select pdf files" Command="{Binding SelectFilesCommand}"/>
+            <Button TextColor="White" BackgroundColor="Blue" Text="Capture images" Command="{Binding CaptureImagesCommand}"/>
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontSize="16" FontAttributes="Bold" Text="Selected Files - " />
+                        <Span x:Name="lblSelectedFileCount" FontSize="16" FontAttributes="Bold" />
+                        <Span FontSize="16" FontAttributes="Bold" Text=" / " />
+                        <Span x:Name="lblTotalFileCount" FontSize="16" FontAttributes="Bold" />
+                        <Span FontSize="16" FontAttributes="Bold" Text=" (Max 6)" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!-- List View Header -->
+                <Grid Grid.Row="0" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="0" Grid.Row="0" />
+
+                    <ia:Checkbox 
+                        x:Name="chkSelectAll"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Margin="0, 0, 5, 0" 
+                        WidthRequest="20" 
+                        HeightRequest="20"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        ia:IsCheckedChanged="ChkSelectAll_IsCheckedChanged">
+                    </ia:Checkbox>
+
+                    <Label Text="Thumbnail" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1" Grid.Row="0"  />
+                    <Label Text="Type" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" Grid.Row="0" />
+                    <Label Text="" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="0"  />
+                </Grid>
+
+                <!-- List View -->
+                <StackLayout Grid.Row="1" Spacing="0">
+                    <Label x:Name="lblNoFileSelected" Text="No file selected..." Margin="5, 5, 0, 0"></Label>
+
+                    <StackLayout x:Name="listViewContainer" Spacing="0">
+                        <Frame
+                            x:Name="listViewBorderTop"
+                            BackgroundColor="LightGray" 
+                            Padding="0, 1, 0, 0" 
+                            CornerRadius="0" 
+                            HasShadow="False">
+                        </Frame>
+
+                        <ListView 
+                            Margin="0"
+                            x:Name="listView" 
+                            ItemsSource="{Binding Media}" 
+                            SelectionMode="None" 
+                            HasUnevenRows="True"
+                            VerticalOptions="Center"
+                            ItemAppearing="listView_ItemAppearing"
+                            ItemTapped="listView_ItemTapped"
+                            android:ListView.IsFastScrollEnabled="True">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame 
+                                            BackgroundColor="LightGray" 
+                                            Padding="1, 0, 1, 1" 
+                                            CornerRadius="0" 
+                                            HasShadow="False">
+                                            <Grid 
+                                                Padding="5, 0, 5, 0"
+                                                BindingContext="{Binding .}" 
+                                                BackgroundColor="White">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="90"></RowDefinition>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50" />
+                                                    <ColumnDefinition Width="100" />
+                                                    <ColumnDefinition Width="70" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <ia:Checkbox Grid.Column="0" 
+                                                    IsChecked="{Binding IsSelected}" 
+                                                    Margin="0, 0, 5, 0" 
+                                                    WidthRequest="20" 
+                                                    HeightRequest="20"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center">
+                                                </ia:Checkbox>
+
+                                                <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">
+                                                    <ffimageloading:CachedImage  
+                                                        DownsampleToViewSize="true" 
+                                                        HeightRequest="80"  
+                                                        WidthRequest="80"
+                                                        Source="{Binding ThumbnailPath}" 
+                                                        Aspect="AspectFit" 
+                                                        HorizontalOptions="Center" 
+                                                        VerticalOptions="Center"
+                                                        Margin="2">
+                                                    </ffimageloading:CachedImage>
+                                                </StackLayout>
+
+                                                <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">
+                                                    <Image Source="play" 
+                                                        IsVisible="false" 
+                                                        HorizontalOptions="Center" 
+                                                        VerticalOptions="Center"     
+                                                        Aspect="AspectFit"
+                                                        Margin="2">
+                                                        <Image.Triggers>
+                                                            <DataTrigger TargetType="Image" Binding="{Binding Type}" Value="Video">
+                                                                <Setter Property="IsVisible" Value="True" />
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                </StackLayout>
+
+                                                <Label Grid.Column="2" Text="{Binding TypeName}" VerticalOptions="Center" HorizontalOptions="Center"></Label>
+
+                                                <!--<Label Grid.Column="3" Text="{Binding FileName}" VerticalOptions="Center"></Label>-->
+                                                <Button x:Name="btnPreview" 
+                                                    Grid.Column="3" 
+                                                    Text="View"
+                                                    FontSize="Micro"
+                                                    WidthRequest="65" 
+                                                    HeightRequest="32" 
+                                                    BorderWidth="1" 
+                                                    BorderColor="Orange" 
+                                                    BackgroundColor="Orange" 
+                                                    BorderRadius="8"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center" 
+                                                    HorizontalOptions="End"
+                                                    Pressed="btnPreview_Pressed"
+                                                    BindingContext="" />
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </StackLayout>
+
+
+                <!-- Submit Button -->
+                <Button 
+                    Grid.Row="2"
+                    x:Name="btnSubmit"  
+                    Margin="0"
+                    Text="Submit Post"
+                    BorderColor="LightBlue" 
+                    BackgroundColor="LightBlue" 
+                    BorderRadius="8"
+                    HeightRequest="40"
+                    VerticalOptions="End"
+                    Pressed="btnSubmit_Pressed" />
+            </Grid>
+
+            <!--<flv:FlowListView 
+                        FlowColumnCount="1" 
+                        x:Name="listItems" 
+                        FlowItemsSource="{Binding Media}"
+                        SeparatorVisibility="Default"
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="StartAndExpand"
+                        HasUnevenRows="false" 
+                        RowHeight="100">
+                    <flv:FlowListView.FlowColumnTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackLayout>
+                                    <ffimageloading:CachedImage  DownsampleToViewSize="true" WidthRequest="100" HeightRequest="150"  Source="{Binding PreviewPath}"  Aspect="AspectFill"  HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Gray">
+                                    </ffimageloading:CachedImage>
+                                </StackLayout>
+
+                                <StackLayout>
+                                    <Image Source="play" IsVisible="false" HorizontalOptions="End" VerticalOptions="End">
+                                       <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding Type}" Value="Video">
+                                                 <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                   </Image>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </flv:FlowListView.FlowColumnTemplate>
+                </flv:FlowListView>-->
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
