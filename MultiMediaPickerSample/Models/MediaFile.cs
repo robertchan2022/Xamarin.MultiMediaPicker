@@ -49,6 +49,9 @@ namespace MultiMediaPickerSample.Models
 
         public string TypeName => Type.ToString();
 
+        public string FileSize => $"{Math.Round((double)FileBytes.Length / 1024).ToString()} KB";
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {

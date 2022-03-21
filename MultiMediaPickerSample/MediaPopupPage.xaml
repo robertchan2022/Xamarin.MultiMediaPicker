@@ -55,10 +55,9 @@
                 <pinch:PinchZoom x:Name="imageViewer">
                     <pinch:PinchZoom.Content>
                         <Image Source="{Binding Path}">
-                            <Image.GestureRecognizers>
-                                <!--<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated"></PinchGestureRecognizer>-->
+                            <!--<Image.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="2"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>
+                            </Image.GestureRecognizers>-->
                         </Image>
                     </pinch:PinchZoom.Content>
                 </pinch:PinchZoom>
@@ -68,8 +67,26 @@
                 <Label>
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span FontSize="16" FontAttributes="Bold" Text="FileName: " />
-                            <Span FontSize="16" Text="{Binding FileName}" />
+                            <Span FontSize="14" FontAttributes="Bold" Text="File Name: " />
+                            <Span FontSize="14" Text="{Binding FileName}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontSize="14" FontAttributes="Bold" Text="File Size: " />
+                            <Span FontSize="14" Text="{Binding FileSize}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontSize="14" FontAttributes="Bold" Text="File Type: " />
+                            <Span FontSize="14" Text="{Binding TypeName}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
