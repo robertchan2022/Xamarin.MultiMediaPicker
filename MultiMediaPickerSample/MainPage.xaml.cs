@@ -55,7 +55,10 @@ namespace MultiMediaPickerSample
             Grid parent = (Grid)button.Parent;
             var selectedItem = parent.BindingContext as MediaFile;
 
-            PopupNavigation.Instance.PushAsync(new MediaPopupPage(selectedItem));
+            var vm = (this.BindingContext as MainViewModel);
+            var mediaFiles = vm.Media.ToList();
+            var index = mediaFiles.IndexOf(selectedItem);
+            PopupNavigation.Instance.PushAsync(new MediaPopupPage(mediaFiles, index));
             //Navigation.PushPopupAsync(new MediaPopupPage());
         }
 

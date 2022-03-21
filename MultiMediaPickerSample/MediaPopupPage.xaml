@@ -29,8 +29,67 @@
             ScaleOut="0.8" />
     </pages:PopupPage.Animation>
 
+    <Frame x:Name="FrameContainer"
+                Margin="15"
+                BackgroundColor="White"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+        <StackLayout
+                    Padding="10,5"
+                    IsClippedToBounds="True"
+                    Spacing="3">
 
-    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+            </Grid>
+
+            <Frame Grid.Row="0" 
+               BorderColor="LightGray"
+               IsClippedToBounds="True"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand">
+                <pinch:PinchZoom x:Name="imageViewer">
+                    <pinch:PinchZoom.Content>
+                        <Image Source="{Binding Path}">
+                            <Image.GestureRecognizers>
+                                <!--<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated"></PinchGestureRecognizer>-->
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="2"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </pinch:PinchZoom.Content>
+                </pinch:PinchZoom>
+            </Frame>
+
+            <StackLayout Grid.Row="1" Margin="0, 20, 0, 20">
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontSize="16" FontAttributes="Bold" Text="FileName: " />
+                            <Span FontSize="16" Text="{Binding FileName}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Text="Previous" BackgroundColor="Blue" TextColor="White" FontSize="Micro" Pressed="OnPreviousButtonTapped"></Button>
+                <Button Grid.Column="1" Text="Next" BackgroundColor="Blue" TextColor="White" FontSize="Micro" Pressed="OnNextButtonTapped"></Button>
+                <Button Grid.Column="2" Text="Close" BackgroundColor="Blue" TextColor="White" FontSize="Micro" Pressed="OnCloseButtonTapped"></Button>
+            </Grid>
+        </StackLayout>
+    </Frame>
+
+    <!--<ScrollView HorizontalOptions="Center" VerticalOptions="Center">
         <AbsoluteLayout>
             <Frame x:Name="FrameContainer"
                 Margin="15"
@@ -41,15 +100,29 @@
                     IsClippedToBounds="True"
                     Spacing="3">
 
-                    <pinch:PinchZoom>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    
+                    <pinch:PinchZoom Grid.Row="0">
                         <pinch:PinchZoom.Content>
                             <Image Source="{Binding Path}" />
                         </pinch:PinchZoom.Content>
                     </pinch:PinchZoom>
+
+
+                    <StackLayout Grid.Row="1">
+                        <Button Text="Previous" Pressed="OnPreviousButtonTapped"></Button>
+                        <Button Text="Next" Pressed="OnNextButtonTapped"></Button>
+                        <Button Text="Close" Pressed="OnCloseButtonTapped"></Button>
+                    </StackLayout>
                 </StackLayout>
             </Frame>
 
-            <!--<ContentView AbsoluteLayout.LayoutBounds="1, 0, -1, -1" AbsoluteLayout.LayoutFlags="PositionProportional">
+            --><!--<ContentView AbsoluteLayout.LayoutBounds="1, 0, -1, -1" AbsoluteLayout.LayoutFlags="PositionProportional">
                 <ContentView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnCloseButtonTapped" />
                 </ContentView.GestureRecognizers>
@@ -64,7 +137,7 @@
                             iOS="close_circle_button.png" />
                     </Image.Source>
                 </Image>
-            </ContentView>-->
+            </ContentView>--><!--
         </AbsoluteLayout>
-    </ScrollView>
+    </ScrollView>-->
 </pages:PopupPage>

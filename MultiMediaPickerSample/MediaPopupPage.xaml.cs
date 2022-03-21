@@ -15,11 +15,21 @@ namespace MultiMediaPickerSample
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MediaPopupPage : PopupPage
     {
-        public MediaPopupPage(MediaFile MediaFile)
+        private List<MediaFile> _mediaFiles = new List<MediaFile>();
+        private int _index = 0;
+
+        public MediaPopupPage(List<MediaFile> mediaFiles, int index)
         {
             InitializeComponent();
 
-            this.BindingContext = MediaFile;
+            _mediaFiles = mediaFiles;
+            _index = index;
+            
+            var mediaFile = mediaFiles[index];
+            this.BindingContext = mediaFile;
+
+            
+
             //var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
 
             //// Orientation (Landscape, Portrait, Square, Unknown)
@@ -52,6 +62,35 @@ namespace MultiMediaPickerSample
         private async void CloseAllPopup()
         {
             await PopupNavigation.Instance.PopAllAsync();
+        }
+
+        private void OnPreviousButtonTapped(object sender, EventArgs e)
+        {
+            if (_index > 0)
+            {
+                _index -= 1;
+            }
+
+            var mediaFile = _mediaFiles[_index];
+            this.BindingContext = mediaFile;
+        }
+
+        private void OnNextButtonTapped(object sender, EventArgs e)
+        {
+            if (_index < _mediaFiles.Count - 1)
+            {
+                _index += 1;
+            }
+
+            var mediaFile = _mediaFiles[_index];
+            this.BindingContext = mediaFile;
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            //imageViewer.BatchBegin();
+            //imageViewer.
+            //imageViewer.BatchCommit();
         }
     }
 }

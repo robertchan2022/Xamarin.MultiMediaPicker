@@ -124,7 +124,7 @@
                                                         HeightRequest="80"  
                                                         WidthRequest="80"
                                                         Source="{Binding ThumbnailPath}" 
-                                                        Aspect="AspectFit" 
+                                                        Aspect="AspectFill" 
                                                         HorizontalOptions="Center" 
                                                         VerticalOptions="Center"
                                                         Margin="2">
