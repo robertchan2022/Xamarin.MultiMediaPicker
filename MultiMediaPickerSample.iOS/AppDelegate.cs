@@ -4,6 +4,7 @@ using System.Linq;
 using DLToolkit.Forms.Controls;
 using Foundation;
 using MultiMediaPickerSample.iOS.Services;
+using Octane.Xamarin.Forms.VideoPlayer.iOS;
 using UIKit;
 
 namespace MultiMediaPickerSample.iOS
@@ -25,6 +26,7 @@ namespace MultiMediaPickerSample.iOS
         {
             Rg.Plugins.Popup.Popup.Init();
             global::Xamarin.Forms.Forms.Init();
+            FormsVideoPlayer.Init();
 
             var multiMediaPickerService = new MultiMediaPickerService();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();

@@ -21,7 +21,11 @@ namespace MultiMediaPickerSample
         public void ScrollToTop()
         {
             var vm = (this.BindingContext as MainViewModel);
-            listView.ScrollTo(vm.Media[0], ScrollToPosition.Start, true);
+
+            if (vm.Media.Count > 0)
+            {
+                listView.ScrollTo(vm.Media[0], ScrollToPosition.Start, true);
+            }
         }
 
         public void UpdateFileSelectionStatus()

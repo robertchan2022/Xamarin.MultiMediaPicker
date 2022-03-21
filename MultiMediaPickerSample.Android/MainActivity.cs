@@ -13,6 +13,7 @@ using Android.Content;
 using Plugin.Permissions;
 using MultiMediaPickerSample.Droid.Services;
 using DLToolkit.Forms.Controls;
+using Octane.Xamarin.Forms.VideoPlayer.Android;
 //using FFImageLoading.Forms.Droid;
 
 namespace MultiMediaPickerSample.Droid
@@ -37,6 +38,7 @@ namespace MultiMediaPickerSample.Droid
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer:true);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            FormsVideoPlayer.Init();
 
             LoadApplication(new App(MultiMediaPickerService.SharedInstance));
          

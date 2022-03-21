@@ -5,6 +5,7 @@
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
              xmlns:pinch="clr-namespace:Xamarin.Forms.PinchZoomImage;assembly=Xamarin.Forms.PinchZoomImage" 
+             xmlns:o="clr-namespace:Octane.Xamarin.Forms.VideoPlayer;assembly=Octane.Xamarin.Forms.VideoPlayer"
              IsAnimationEnabled="True"
              x:Name="popupContainer">
     <!--<pages:PopupPage.Resources>
@@ -47,20 +48,40 @@
                 </Grid.RowDefinitions>
             </Grid>
 
-            <Frame Grid.Row="0" 
-               BorderColor="LightGray"
-               IsClippedToBounds="True"
-               HorizontalOptions="FillAndExpand"
-               VerticalOptions="FillAndExpand">
-                <pinch:PinchZoom x:Name="imageViewer">
+   
+            <Frame 
+                Grid.Row="0" 
+                IsVisible="{Binding IsImage}"
+                BorderColor="LightGray"
+                IsClippedToBounds="True"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+
+                <pinch:PinchZoom
+                        x:Name="imageViewer" >
                     <pinch:PinchZoom.Content>
                         <Image Source="{Binding Path}">
-                            <!--<Image.GestureRecognizers>
+                            <Image.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="2"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>-->
+                            </Image.GestureRecognizers>
                         </Image>
                     </pinch:PinchZoom.Content>
                 </pinch:PinchZoom>
+            </Frame>
+
+            <Frame 
+                Grid.Row="0" 
+                IsVisible="{Binding IsVideo}"
+                BorderColor="LightGray"
+                IsClippedToBounds="True"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+
+                <o:VideoPlayer 
+                        Source="{Binding Path}"
+                        AutoPlay="True" 
+                        FillMode="ResizeAspect" 
+                        DisplayControls="True" />
             </Frame>
 
             <StackLayout Grid.Row="1" Margin="0, 20, 0, 20">
